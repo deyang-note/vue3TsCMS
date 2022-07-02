@@ -1,5 +1,7 @@
 import { createApp } from "vue"
-import registerApp from "@/global"
+import globalRegisterApp from "@/global"
+
+import "@/service/axios_demo"
 
 // 全局引入
 // import ElementPlus from "element-plus"
@@ -11,8 +13,12 @@ import store from "./store"
 
 const app = createApp(App)
 
-registerApp(app)
+// globalRegisterApp(app)
+app.use(globalRegisterApp)
 app.use(store)
 app.use(router)
 // app.use(ElementPlus)
 app.mount("#app")
+
+console.log(process.env.VUE_APP_BASE_URL)
+console.log(process.env.VUE_APP_BASE_NAME)
