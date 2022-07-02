@@ -7,6 +7,12 @@ const dyRequest = new DYRequest({
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptors: (config) => {
+
+      const token = ""
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+
       console.log("请求成功的拦截：", config)
       return config
     },
