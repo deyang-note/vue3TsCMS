@@ -1,14 +1,21 @@
 import axios from "axios"
 import { AxiosInstance } from "axios"
 import { DYRequestInterceptors, DYRequestConfig } from "./type"
+import { ElLoading } from "element-plus"
+import { LoadingInstance } from "element-plus/lib/components/loading/src/loading"
+
+const DEFAULT_LOADING = true
 
 class DYRequest {
   instance: AxiosInstance
   interceptors?: DYRequestInterceptors
+  showLoading: boolean
+  loading?: LoadingInstance
+
   constructor(config: DYRequestConfig) {
     this.instance = axios.create(config)
+    this.showLoading = config.showLoading ?? DEFAULT_LOADING
     this.interceptors = config.interceptors
-
     // 从 config 中取出的拦截器是对应实例的拦截器
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptors,
@@ -23,6 +30,13 @@ class DYRequest {
     this.instance.interceptors.request.use(
       (config) => {
         console.log("所有的实例都有的拦截器：请求成功的拦截：")
+        if (this.showLoading) {
+          this.loading = ElLoading.service({
+            lock: true,
+            text: "请在请求数据...",
+            background: "rgba(0, 0, 0, 0.5)"
+          })
+        }
         return config
       },
       (err) => {
@@ -33,6 +47,9 @@ class DYRequest {
     this.instance.interceptors.response.use(
       (res) => {
         console.log("所有的实例都有的拦截器：响应成功的拦截：")
+
+        // 将 loading 移除
+        this.loading?.close()
 
         const data = res.data
         if (data.returnCode === "-1001") {
@@ -54,12 +71,25 @@ class DYRequest {
     if (config.interceptors?.requestInterceptors) {
       config = config.interceptors.requestInterceptors(config)
     }
-    this.instance.request(config).then((res) => {
-      if (config.interceptors?.responseInterceptors) {
-        res = config.interceptors.responseInterceptors(res)
-      }
-      console.log(res)
-    })
+
+    if (config.showLoading === false) {
+      this.showLoading = config.showLoading
+    }
+
+    this.instance
+      .request(config)
+      .then((res) => {
+        if (config.interceptors?.responseInterceptors) {
+          res = config.interceptors.responseInterceptors(res)
+        }
+        console.log(res)
+        // 将 showLoading 设置为 true，这样不会影响下一个请求
+        this.showLoading = DEFAULT_LOADING
+      })
+      .catch((err) => {
+        this.showLoading = DEFAULT_LOADING
+        return err
+      })
   }
 }
 
