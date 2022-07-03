@@ -13,9 +13,12 @@
 
 <script setup lang="ts">
 import { reactive, defineExpose, ref } from "vue"
+import { useStore } from "vuex"
 import localCache from "@/utils/cache"
 import { rules } from "../config/login-account"
 import { ElForm } from "element-plus"
+
+const store = useStore()
 
 const account = reactive({
   name: localCache.getCache("name") ?? "",
@@ -37,6 +40,7 @@ const loginAction = (isKeepPwd: boolean) => {
         localCache.deleteCache("password")
       }
       // 2.开始进行登陆验证
+      store.dispatch("login/accountLoginAction", { ...account })
     }
   })
 }

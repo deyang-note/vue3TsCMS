@@ -34,7 +34,6 @@ class DYRequest {
     // 添加所有实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log("所有的实例都有的拦截器：请求成功的拦截：")
         if (this.showLoading) {
           this.loading = ElLoading.service({
             lock: true,
@@ -45,14 +44,11 @@ class DYRequest {
         return config
       },
       (err) => {
-        console.log("所有的实例都有的拦截器：请求失败的拦截：")
         return err
       }
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log("所有的实例都有的拦截器：响应成功的拦截：")
-
         // 将 loading 移除
         this.loading?.close()
 
@@ -62,7 +58,6 @@ class DYRequest {
         } else return res.data
       },
       (err) => {
-        console.log("所有的实例都有的拦截器：响应失败的拦截：")
         // 例子：判断不同的 HttpErrorCode显示不同的错误信息
         if (err.response.status === 404) {
           console.log("404的错误～")

@@ -14,19 +14,15 @@ const dyRequest = new DYRequest({
           config.headers as AxiosRequestHeaders
         ).Authorization = `Bearer ${token}`
       }
-      console.log("请求成功的拦截：", config)
       return config
     },
     requestInterceptorsCatch: (err) => {
-      console.log("请求失败的拦截：", err)
       return err
     },
     responseInterceptors: (res) => {
-      console.log("响应成功的拦截：", res)
       return res
     },
     responseInterceptorsCatch: (err) => {
-      console.log("响应失败的拦截：", err)
       return err
     }
   }
