@@ -13,9 +13,14 @@ class DYRequest {
   loading?: LoadingInstance
 
   constructor(config: DYRequestConfig) {
+    // 创建 axios 实例
     this.instance = axios.create(config)
+
+    // 保存基本信息
     this.showLoading = config.showLoading ?? DEFAULT_LOADING
     this.interceptors = config.interceptors
+
+    // 使用拦截器
     // 从 config 中取出的拦截器是对应实例的拦截器
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptors,
@@ -67,29 +72,53 @@ class DYRequest {
     )
   }
 
-  request(config: DYRequestConfig) {
-    if (config.interceptors?.requestInterceptors) {
-      config = config.interceptors.requestInterceptors(config)
-    }
+  request<T>(config: DYRequestConfig<T>): Promise<T> {
+    return new Promise((resolve, reject) => {
+      // 1.单个请求对数据的处理
+      if (config.interceptors?.requestInterceptors) {
+        config = config.interceptors.requestInterceptors(config)
+      }
+      // 2.将 showLoading 设置为 true，这样不会影响下一个请求
+      if (config.showLoading === false) {
+        this.showLoading = config.showLoading
+      }
 
-    if (config.showLoading === false) {
-      this.showLoading = config.showLoading
-    }
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          // 1.单个请求对数据的处理
+          if (config.interceptors?.responseInterceptors) {
+            res = config.interceptors.responseInterceptors(res)
+          }
+          console.log(res)
+          // 2.将 showLoading 设置为 true，这样不会影响下一个请求
+          this.showLoading = DEFAULT_LOADING
 
-    this.instance
-      .request(config)
-      .then((res) => {
-        if (config.interceptors?.responseInterceptors) {
-          res = config.interceptors.responseInterceptors(res)
-        }
-        console.log(res)
-        // 将 showLoading 设置为 true，这样不会影响下一个请求
-        this.showLoading = DEFAULT_LOADING
-      })
-      .catch((err) => {
-        this.showLoading = DEFAULT_LOADING
-        return err
-      })
+          // 3.将结果 resolve出去
+          resolve(res)
+        })
+        .catch((err) => {
+          this.showLoading = DEFAULT_LOADING
+          reject(err)
+          return err
+        })
+    })
+  }
+
+  get<T>(config: DYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: "GET" })
+  }
+
+  post<T>(config: DYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: "POST" })
+  }
+
+  delete<T>(config: DYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: "DELETE" })
+  }
+
+  patch<T>(config: DYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: "PATCH" })
   }
 }
 
