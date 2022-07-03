@@ -1,6 +1,8 @@
 import { createApp } from "vue"
 import globalRegisterApp from "@/global"
 
+import "normalize.css"
+import "./assets/css/index.less"
 // import "@/service/axios_demo"
 import dyRequest from "@/service/index"
 
