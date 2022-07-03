@@ -13,13 +13,13 @@
 
 <script setup lang="ts">
 import { reactive, defineExpose, ref } from "vue"
-import LocalCache from "@/utils/cache"
+import localCache from "@/utils/cache"
 import { rules } from "../config/login-account"
 import { ElForm } from "element-plus"
 
 const account = reactive({
-  name: "",
-  password: ""
+  name: localCache.getCache("name") ?? "",
+  password: localCache.getCache("password") ?? ""
 })
 
 const formRef = ref<InstanceType<typeof ElForm>>()
@@ -27,12 +27,14 @@ const formRef = ref<InstanceType<typeof ElForm>>()
 const loginAction = (isKeepPwd: boolean) => {
   formRef.value?.validate((valid) => {
     if (valid) {
-      console.log("真正的执行登陆逻辑")
       // 1.判断是否需要记住密码
       if (isKeepPwd) {
         // 嫩滴缓存
-        localStorage.setItem("name", account.name)
-        localStorage.setItem("password", account.password)
+        localCache.setCache("name", account.name)
+        localCache.setCache("password", account.password)
+      } else {
+        localCache.deleteCache("name")
+        localCache.deleteCache("password")
       }
       // 2.开始进行登陆验证
     }
