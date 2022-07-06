@@ -1,4 +1,4 @@
 export interface ILoginState {
-  token: string,
+  token: string
   userInfo: any
 }
