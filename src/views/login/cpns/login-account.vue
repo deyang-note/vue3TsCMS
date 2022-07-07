@@ -32,7 +32,7 @@ const loginAction = (isKeepPwd: boolean) => {
     if (valid) {
       // 1.判断是否需要记住密码
       if (isKeepPwd) {
-        // 嫩滴缓存
+        // 缓存
         localCache.setCache("name", account.name)
         localCache.setCache("password", account.password)
       } else {

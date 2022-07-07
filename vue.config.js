@@ -8,15 +8,26 @@ module.exports = defineConfig({
   transpileDependencies: true,
   // 配置方式一：CLI提供的属性配置
   outputDir: "./build",
-  publicPath: "./",
+  // publicPath: "./",
   // 配置方式二：和webpack属性完全一致，最后会进行合并
-  // configureWebpack: {
-  //   resolve: {
-  //     alias: {
-  //       components: "@/components"
-  //     }
-  //   }
-  // }
+  devServer: {
+    proxy: {
+      "^/api": {
+        target: "http://152.136.185.210:4000",
+        pathRewrite: {
+          "^/api": ""
+        },
+        changeOrigin: true
+      }
+    }
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        components: "@/components"
+      }
+    }
+  },
   // configureWebpack: (config) => {
   //   config.resolve.alias = {
   //     "@": path.resolve(__dirname, "src"),
