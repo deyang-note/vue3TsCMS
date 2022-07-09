@@ -72,7 +72,7 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
 
     phoneLoginAction({ commit }, payload: any) {
-      console.log("执行phoneLoginAction...", payload)
+      console.log("执行phoneLoginAction...", payload, commit)
     }
   }
 }

@@ -1,7 +1,9 @@
 <template>
   <div class="main">
     <el-container class="main-content">
-      <el-aside width="210px">Aside</el-aside>
+      <el-aside width="210px">
+        <nav-menu />
+      </el-aside>
       <el-container class="page">
         <el-header class="page-header">Header</el-header>
         <el-main class="page-content">Main</el-main>
@@ -10,12 +12,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-
-export default defineComponent({
-  name: "Main"
-})
+<script lang="ts" setup>
+import NavMenu from "@/components/nav-menu"
 </script>
 
 <style lang="less" scoped>

@@ -4,7 +4,7 @@ import globalRegisterApp from "@/global"
 import "normalize.css"
 import "./assets/css/index.less"
 // import "@/service/axios_demo"
-import dyRequest from "@/service/index"
+// import dyRequest from "@/service/index"
 
 // 全局引入
 // import ElementPlus from "element-plus"
