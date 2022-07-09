@@ -9,6 +9,8 @@ import {
 import { IAccount } from "@/service/login/type"
 import localCache from "@/utils/cache"
 import router from "@/router"
+// import { useRouter } from "vue-router"
+// const router = useRouter()
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -53,8 +55,22 @@ const loginModule: Module<ILoginState, IRootState> = {
       localCache.setCache("userMenus", userMenus)
 
       // 4.跳转到首页
-      await router.push("/main")
+      console.log("跳转到用户首页")
+      await router.push("main")
+      console.log(123)
     },
+
+    loadLocalLogin({ commit }) {
+      const token = localCache.getCache("token")
+      if (token) commit("changeToken", token)
+
+      const userInfo = localCache.getCache("userInfo")
+      if (userInfo) commit("changeUserInfo")
+
+      const userMenus = localCache.getCache("userMenus")
+      if (userMenus) commit("changeUserMenus")
+    },
+
     phoneLoginAction({ commit }, payload: any) {
       console.log("执行phoneLoginAction...", payload)
     }

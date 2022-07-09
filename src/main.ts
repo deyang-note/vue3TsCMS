@@ -12,7 +12,7 @@ import dyRequest from "@/service/index"
 
 import App from "./App.vue"
 import router from "./router"
-import store from "./store"
+import store, { setupStore } from "./store"
 
 const app = createApp(App)
 
@@ -20,5 +20,7 @@ const app = createApp(App)
 app.use(globalRegisterApp)
 app.use(store)
 app.use(router)
+
+setupStore()
 // app.use(ElementPlus)
 app.mount("#app")

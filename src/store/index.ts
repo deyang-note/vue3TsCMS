@@ -2,7 +2,7 @@ import { createStore } from "vuex"
 import { IRootState } from "@/store/type"
 import login from "./login/login"
 
-export default createStore<IRootState>({
+const store = createStore<IRootState>({
   state() {
     return {
       name: "chendeyang",
@@ -16,3 +16,9 @@ export default createStore<IRootState>({
     login
   }
 })
+
+export function setupStore() {
+  store.dispatch("login/loadLocalLogin")
+}
+
+export default store

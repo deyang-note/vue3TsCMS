@@ -1,5 +1,5 @@
-import registerElement from "@/global/register-element";
+import registerElement from "@/global/register-element"
 export default function globalRegisterApp(app) {
-    registerElement(app);
+  registerElement(app)
 }
 //# sourceMappingURL=index.js.map
