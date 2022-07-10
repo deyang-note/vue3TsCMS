@@ -16,6 +16,14 @@ import store, { setupStore } from "./store"
 
 const app = createApp(App)
 
+import * as ElIconModules from "@element-plus/icons-vue"
+for (const iconName in ElIconModules) {
+  if (Reflect.has(ElIconModules, iconName)) {
+    const item = ElIconModules[iconName]
+    app.component(iconName, item)
+  }
+}
+
 // globalRegisterApp(app)
 app.use(globalRegisterApp)
 app.use(store)

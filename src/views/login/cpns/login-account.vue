@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, defineExpose, ref } from "vue"
+import { reactive, ref } from "vue"
 import { useStore } from "vuex"
 import localCache from "@/utils/cache"
 import { rules } from "../config/login-account"
@@ -44,7 +44,7 @@ const loginAction = (isKeepPwd: boolean) => {
     }
   })
 }
-
+// eslint-disable-next-line no-undef
 defineExpose({
   loginAction
 })

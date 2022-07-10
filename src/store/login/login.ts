@@ -57,7 +57,6 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 4.跳转到首页
       console.log("跳转到用户首页")
       await router.push("main")
-      console.log(123)
     },
 
     loadLocalLogin({ commit }) {
@@ -65,10 +64,10 @@ const loginModule: Module<ILoginState, IRootState> = {
       if (token) commit("changeToken", token)
 
       const userInfo = localCache.getCache("userInfo")
-      if (userInfo) commit("changeUserInfo")
+      if (userInfo) commit("changeUserInfo", userInfo)
 
       const userMenus = localCache.getCache("userMenus")
-      if (userMenus) commit("changeUserMenus")
+      if (userMenus) commit("changeUserMenus", userMenus)
     },
 
     phoneLoginAction({ commit }, payload: any) {

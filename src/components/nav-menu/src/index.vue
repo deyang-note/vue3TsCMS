@@ -2,7 +2,7 @@
   <div class="nav-menu">
     <div class="logo">
       <img class="img" src="~@/assets/img/logo.svg" alt="logo" />
-      <span>Vue3 + TS</span>
+      <span v-if="!collapse">Vue3 + TS</span>
     </div>
     <el-menu
       default-active="2"
@@ -10,6 +10,7 @@
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
+      :collapse="props.collapse"
     >
       <template v-for="item in userMenus" :key="item.id">
         <!-- 二级菜单 -->
@@ -17,14 +18,20 @@
           <!-- 二级菜单的可以展开的标题 -->
           <el-sub-menu :index="item.id + ''">
             <template #title>
-              <i v-if="item.icon" :class="item.icon"></i>
+              <el-icon v-if="item.icon">
+                <!-- <component class="fold-menu" :is="item.icon"></component> -->
+                <Expand />
+              </el-icon>
               <span>{{ item.name }}</span>
             </template>
             <!-- 遍历里面的item -->
-            <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
-                <i v-if="subitem.icon" :class="subitem.icon"></i>
-                <span>{{ subitem.name }}</span>
+            <template v-for="subItem in item.children" :key="subItem.id">
+              <el-menu-item :index="subItem.id + ''">
+                <el-icon v-if="subItem.icon">
+                  <!-- <component class="fold-menu" :is="subItem.icon"></component> -->
+                  <Expand />
+                </el-icon>
+                <span>{{ subItem.name }}</span>
               </el-menu-item>
             </template>
           </el-sub-menu>
@@ -32,7 +39,10 @@
         <!-- 一级菜单 -->
         <template v-else-if="item.type === 2">
           <el-menu-item :index="item.id + ''">
-            <i v-if="item.icon" :class="item.icon"></i>
+            <el-icon v-if="item.icon">
+              <!-- <component class="fold-menu" :is="item.icon"></component> -->
+              <Expand />
+            </el-icon>
             <span>{{ item.name }}</span>
           </el-menu-item>
         </template>
@@ -42,12 +52,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { useStore } from "@/store"
 
 const store = useStore()
 const userMenus = computed(() => store.state.login.userMenus)
-console.log(userMenus)
+
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  collapse: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <style lang="less" scoped>
@@ -62,6 +79,7 @@ console.log(userMenus)
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    color: #fff;
 
     .img {
       height: 100%;
