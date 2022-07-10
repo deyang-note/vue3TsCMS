@@ -8,9 +8,8 @@ import {
 } from "@/service/login/login"
 import { IAccount } from "@/service/login/type"
 import localCache from "@/utils/cache"
+import { mapMenusToRoutes } from "@/utils/map-menus"
 import router from "@/router"
-// import { useRouter } from "vue-router"
-// const router = useRouter()
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -31,6 +30,11 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // userMenus => routes
+      mapMenusToRoutes(userMenus)
+
+      // 将 routes => router.main.children
     }
   },
   actions: {
