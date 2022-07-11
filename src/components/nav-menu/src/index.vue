@@ -26,7 +26,10 @@
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subItem in item.children" :key="subItem.id">
-              <el-menu-item :index="subItem.id + ''">
+              <el-menu-item
+                :index="subItem.id + ''"
+                @click="handleMenuItemClick(subItem)"
+              >
                 <el-icon v-if="subItem.icon">
                   <!-- <component class="fold-menu" :is="subItem.icon"></component> -->
                   <Expand />
@@ -54,7 +57,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
 import { useStore } from "@/store"
+import { useRouter } from "vue-router"
 
+const router = useRouter()
 const store = useStore()
 const userMenus = computed(() => store.state.login.userMenus)
 
@@ -65,6 +70,12 @@ const props = defineProps({
     default: false
   }
 })
+
+const handleMenuItemClick = (item: any) => {
+  router.push({
+    path: item.url ?? "/not-found"
+  })
+}
 </script>
 
 <style lang="less" scoped>

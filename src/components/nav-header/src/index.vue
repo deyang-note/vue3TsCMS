@@ -4,12 +4,17 @@
       <Expand v-if="isFold" />
       <Fold v-else />
     </el-icon>
+    <div class="content">
+      <div>面包屑</div>
+      <user-info />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue"
 import { Expand, Fold } from "@element-plus/icons-vue"
+import UserInfo from "./user-info.vue"
 
 // eslint-disable-next-line no-undef
 const emit = defineEmits(["foldChange"])
@@ -22,5 +27,17 @@ const handleFoldClick = () => {
 
 <style scoped lang="less">
 .nav-header {
+  display: flex;
+  width: 100%;
+  .el-icon {
+    cursor: pointer;
+  }
+  .content {
+    flex: 1;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 </style>
