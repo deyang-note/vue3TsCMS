@@ -1,47 +1,47 @@
 <template>
   <div class="user">
     <div class="search">
-      <el-form label-width="100px">
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="用户名">
-              <el-input />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="密码">
-              <el-input show-password />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="喜欢的运动">
-              <el-select style="width: 100%">
-                <el-option>篮球</el-option>
-                <el-option>足球</el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="创建时间">
-              <el-date-picker style="width: 100%"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+      <dy-form :form-items="formItem" />
     </div>
     <div class="content"></div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script lang="ts" setup>
+import DyForm, { IFormItem } from "@/base-ui/form"
 
-export default defineComponent({
-  name: "user",
-  setup() {
-    return {}
+const formItem: IFormItem[] = [
+  {
+    type: "input",
+    label: "用户名",
+    placeholder: "请输入用户名"
+  },
+  {
+    type: "password",
+    label: "密码",
+    placeholder: "请输入密码"
+  },
+  {
+    type: "select",
+    label: "喜欢的运动",
+    placeholder: "请选择喜欢的运动",
+    options: [
+      {
+        title: "篮球",
+        value: "basketball"
+      },
+      {
+        title: "足球",
+        value: "football"
+      }
+    ]
+  },
+  {
+    type: "datepicker",
+    label: "创建时间",
+    placeholder: "请输入创建时间"
   }
-})
+]
 </script>
 
 <style scoped></style>
