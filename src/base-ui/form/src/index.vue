@@ -1,10 +1,14 @@
 <template>
   <div class="dy-form">
-    <el-form label-width="100px">
+    <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
-          <el-col :span="8">
-            <el-form-item :label="item.label">
+          <el-col :="colLayout">
+            <el-form-item
+              :label="item.label"
+              :rules="item.rules"
+              :style="itemStyle"
+            >
               <template v-if="['input', 'password'].includes(item.type)">
                 <el-input
                   :placeholder="item.placeholder"
@@ -23,7 +27,10 @@
                 </el-select>
               </template>
               <template v-else>
-                <el-date-picker></el-date-picker>
+                <el-date-picker
+                  :="item.otherOptions"
+                  style="width: 100%"
+                ></el-date-picker>
               </template>
             </el-form-item>
           </el-col>
@@ -40,7 +47,32 @@ const props = defineProps({
   formItems: {
     type: Array as PropType<IFormItem[]>,
     default: () => []
+  },
+  labelWidth: {
+    type: String,
+    default: "100px"
+  },
+  itemStyle: {
+    type: Object,
+    default: () => ({ padding: "20px 30px" })
+  },
+  colLayout: {
+    type: Object,
+    default: () => ({
+      xl: 6, // > 1920 -> 4
+      lg: 8,
+      md: 12,
+      sm: 24,
+      xs: 24
+    })
   }
 })
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.dy-form {
+  padding-top: 20px;
+  .form-item {
+    padding: 5px 30px;
+  }
+}
+</style>
