@@ -10,6 +10,7 @@ import { IAccount } from "@/service/login/type"
 import localCache from "@/utils/cache"
 import { mapMenusToRoutes } from "@/utils/map-menus"
 import router from "@/router"
+import store from "@/store"
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -30,6 +31,14 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // userMenus => routes
+      // const userMenus = (store.state as any).login.userMenus
+      const routes = mapMenusToRoutes(userMenus)
+      // 将 routes => router.main.children
+      routes.forEach((route) => {
+        router.addRoute("main", route)
+      })
     }
   },
   actions: {

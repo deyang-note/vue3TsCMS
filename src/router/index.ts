@@ -36,15 +36,6 @@ router.beforeEach((to) => {
     if (!token) {
       return "/login"
     }
-
-    // userMenus => routes
-    const userMenus = (store.state as any).login.userMenus
-    const routes = mapMenusToRoutes(userMenus)
-
-    // 将 routes => router.main.children
-    routes.forEach((route) => {
-      router.addRoute("main", route)
-    })
   }
 })
 
