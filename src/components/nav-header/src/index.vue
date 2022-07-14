@@ -5,7 +5,7 @@
       <Fold v-else />
     </el-icon>
     <div class="content">
-      <div>面包屑</div>
+      <dy-breadcrumb />
       <user-info />
     </div>
   </div>
@@ -15,6 +15,7 @@
 import { ref } from "vue"
 import { Expand, Fold } from "@element-plus/icons-vue"
 import UserInfo from "./user-info.vue"
+import DyBreadcrumb from "@/base-ui/breadcrumb"
 
 // eslint-disable-next-line no-undef
 const emit = defineEmits(["foldChange"])
