@@ -5,12 +5,12 @@
       <span v-if="!collapse">Vue3 + TS</span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
-      :collapse="props.collapse"
+      :collapse="collapse"
     >
       <template v-for="item in userMenus" :key="item.id">
         <!-- 二级菜单 -->
@@ -57,20 +57,30 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
 import { useStore } from "@/store"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
+import { pathMapToMenus } from "@/utils/map-menus"
 
+// router
 const router = useRouter()
+const route = useRoute()
+const currentPath = route.fullPath
+
 const store = useStore()
 const userMenus = computed(() => store.state.login.userMenus)
 
+// data
+const menu = pathMapToMenus(userMenus.value, currentPath)
+const defaultValue = ref(menu.id + "")
+
 // eslint-disable-next-line no-undef
-const props = defineProps({
+defineProps({
   collapse: {
     type: Boolean,
     default: false
   }
 })
 
+// event handler
 const handleMenuItemClick = (item: any) => {
   router.push({
     path: item.url ?? "/not-found"
