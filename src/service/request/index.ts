@@ -85,7 +85,6 @@ class DYRequest {
           if (config.interceptors?.responseInterceptors) {
             res = config.interceptors.responseInterceptors(res)
           }
-          console.log(res)
           // 2.将 showLoading 设置为 true，这样不会影响下一个请求
           this.showLoading = DEFAULT_LOADING
 
@@ -100,19 +99,19 @@ class DYRequest {
     })
   }
 
-  get<T>(config: DYRequestConfig<T>): Promise<T> {
+  get<T = any>(config: DYRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: "GET" })
   }
 
-  post<T>(config: DYRequestConfig<T>): Promise<T> {
+  post<T = any>(config: DYRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: "POST" })
   }
 
-  delete<T>(config: DYRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: DYRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: "DELETE" })
   }
 
-  patch<T>(config: DYRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: DYRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: "PATCH" })
   }
 }

@@ -43,7 +43,6 @@ const loginModule: Module<ILoginState, IRootState> = {
   },
   actions: {
     async accountLoginAction({ commit }, payload: IAccount) {
-      console.log("执行accountLoginAction...", payload)
       // 1.实现登陆逻辑
       const loginResult = await accountLoginRequest(payload)
       const { id, token } = loginResult.data
@@ -63,7 +62,6 @@ const loginModule: Module<ILoginState, IRootState> = {
       localCache.setCache("userMenus", userMenus)
 
       // 4.跳转到首页
-      console.log("跳转到用户首页")
       await router.push("main")
     },
 
