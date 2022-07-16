@@ -5,25 +5,37 @@
       <Fold v-else />
     </el-icon>
     <div class="content">
-      <dy-breadcrumb />
+      <dy-breadcrumb :breadcrumbs="breadcrumbs" />
       <user-info />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import { Expand, Fold } from "@element-plus/icons-vue"
 import UserInfo from "./user-info.vue"
 import DyBreadcrumb from "@/base-ui/breadcrumb"
+import { pathMapBreadcrumbs } from "@/utils/map-menus"
+import { useStore } from "@/store"
+import { useRoute } from "vue-router"
 
-// eslint-disable-next-line no-undef
 const emit = defineEmits(["foldChange"])
 const isFold = ref(false)
 const handleFoldClick = () => {
   isFold.value = !isFold.value
   emit("foldChange", isFold.value)
 }
+
+// 面包屑数据
+const store = useStore()
+
+const breadcrumbs = computed(() => {
+  const userMenus = store.state.login.userMenus
+  const route = useRoute()
+  const currentPath = route.path
+  return pathMapBreadcrumbs(userMenus, currentPath)
+})
 </script>
 
 <style scoped lang="less">
