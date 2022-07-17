@@ -24,12 +24,9 @@ for (const iconName in ElIconModules) {
   }
 }
 
-// globalRegisterApp(app)
 app.use(globalRegisterApp)
 app.use(store)
 setupStore()
-
 app.use(router)
 
-// app.use(ElementPlus)
 app.mount("#app")
