@@ -1,5 +1,13 @@
 <template>
   <div class="dy-table">
+    <div class="header">
+      <slot name="header">
+        <div class="title">{{ title }}</div>
+        <div class="handler">
+          <slot name="headerHandler"></slot>
+        </div>
+      </slot>
+    </div>
     <el-table
       :data="listData"
       border
@@ -29,6 +37,9 @@
         </el-table-column>
       </template>
     </el-table>
+    <div class="footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 
@@ -49,6 +60,10 @@ const props = defineProps({
   showSelectColumn: {
     type: Boolean,
     default: false
+  },
+  title: {
+    type: String,
+    default: "标题"
   }
 })
 const emits = defineEmits(["selectionChange"])
@@ -57,4 +72,28 @@ const handleSelectionChange = (value: any) => {
   emits("selectionChange", value)
 }
 </script>
-<style scoped></style>
+<style scoped lang="less">
+.header {
+  display: flex;
+  height: 45px;
+  padding: 0 5px;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .handler {
+    align-items: center;
+  }
+}
+.footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  .el-pagination {
+    text-align: right;
+  }
+}
+</style>

@@ -5,10 +5,31 @@
       <dy-table
         :list-data="userList"
         :prop-list="propList"
+        title="垃圾"
         :show-index-column="showIndexColumn"
         :show-select-column="showSelectColumn"
         @selectionChange="selectionChange"
       >
+        <!-- 1.header中的插槽 -->
+        <template #headerHandler>
+          <el-button type="primary">新建用户</el-button>
+          <!--          <el-button :icon="Refresh">刷新</el-button>-->
+        </template>
+        <template #footer>
+          <el-pagination
+            v-model:currentPage="currentPage4"
+            v-model:page-size="pageSize4"
+            :page-sizes="[100, 200, 300, 400]"
+            :small="small"
+            :disabled="disabled"
+            :background="background"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </template>
+        <!-- 列中的插槽 -->
         <template #status="scope">
           <el-button
             size="small"
@@ -36,10 +57,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { formConfig } from "./config/search.config"
 import { useStore } from "vuex"
-import { Delete, Edit } from "@element-plus/icons-vue"
+import { Delete, Edit, Refresh } from "@element-plus/icons-vue"
 
 import PageSearch from "@/components/page-search"
 import DyTable from "@/base-ui/table"
@@ -81,6 +102,24 @@ const showSelectColumn = true
 
 const selectionChange = (value: any) => {
   console.log(value)
+}
+
+const currentPage1 = ref(5)
+const currentPage2 = ref(5)
+const currentPage3 = ref(5)
+const currentPage4 = ref(4)
+const pageSize2 = ref(100)
+const pageSize3 = ref(100)
+const pageSize4 = ref(100)
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+
+const handleSizeChange = (val: number) => {
+  console.log(`${val} items per page`)
+}
+const handleCurrentChange = (val: number) => {
+  console.log(`current page: ${val}`)
 }
 </script>
 
