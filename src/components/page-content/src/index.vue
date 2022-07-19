@@ -47,16 +47,20 @@ import { Delete, Edit, Refresh } from "@element-plus/icons-vue"
 import { computed, ref } from "vue"
 import { useStore } from "vuex"
 
-defineProps({
+const props = defineProps({
   contentTableConfig: {
     type: Object,
+    required: true
+  },
+  pageName: {
+    type: String,
     required: true
   }
 })
 
 const store = useStore()
 store.dispatch("system/getPageListAction", {
-  url: "/users/list",
+  pageName: props.pageName,
   queryInfo: {
     offset: 0,
     size: 10
