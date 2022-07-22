@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <dy-table :list-data="userList" :="contentTableConfig">
+    <dy-table :list-data="dataList" :="contentTableConfig">
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
         <el-button type="primary">新建用户</el-button>
@@ -67,7 +67,9 @@ store.dispatch("system/getPageListAction", {
   }
 })
 
-const userList = computed(() => store.state.system.userList)
+const dataList = computed(() =>
+  store.getters[`system/pageListData`](props.pageName)
+)
 // const userCount = computed(() => store.state.system.userCount)
 </script>
 <style scoped lang="less">

@@ -14,6 +14,19 @@ const systemModule: Module<ISystemState, IRootState> = {
       roleCount: 0
     }
   },
+  getters: {
+    pageListData(state) {
+      return (pageName: string) => {
+        // return state[`${pageName}List`]
+        switch (pageName) {
+          case "user":
+            return state.userList
+          case "role":
+            return state.roleList
+        }
+      }
+    }
+  },
   mutations: {
     changeUserList(state, userList: any[]) {
       state.userList = userList
