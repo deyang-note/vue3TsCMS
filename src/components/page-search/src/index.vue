@@ -9,7 +9,9 @@
           <el-button type="primary" :icon="Refresh" @click="handleResetClick">
             重制
           </el-button>
-          <el-button type="primary" :icon="Search">搜索</el-button>
+          <el-button type="primary" :icon="Search" @click="handleQueryClick">
+            搜索
+          </el-button>
         </div>
       </template>
     </dy-form>
@@ -35,6 +37,8 @@ for (const item of formItems) {
   formOriginData[item.field] = ""
 }
 const formData = ref(formOriginData)
+const emits = defineEmits(["resetBtnClick", "queryBtnClick"])
+
 // 2.优化二用户点击重置
 const handleResetClick = () => {
   // 方法一：内部通过watch监听formData抛出方法进行重置，
@@ -43,6 +47,10 @@ const handleResetClick = () => {
   // }
   // 方法二：
   formData.value = formOriginData
+  emits("resetBtnClick")
+}
+const handleQueryClick = () => {
+  emits("queryBtnClick", formData.value)
 }
 </script>
 
