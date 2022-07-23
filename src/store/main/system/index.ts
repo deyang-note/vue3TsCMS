@@ -8,8 +8,8 @@ const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state() {
     return {
-      userList: [],
-      userCount: 0,
+      usersList: [],
+      usersCount: 0,
       roleList: [],
       roleCount: 0
     }
@@ -17,22 +17,16 @@ const systemModule: Module<ISystemState, IRootState> = {
   getters: {
     pageListData(state) {
       return (pageName: string) => {
-        // return state[`${pageName}List`]
-        switch (pageName) {
-          case "user":
-            return state.userList
-          case "role":
-            return state.roleList
-        }
+        return state[`${pageName}List`]
       }
     }
   },
   mutations: {
-    changeUserList(state, userList: any[]) {
-      state.userList = userList
+    changeUsersList(state, userList: any[]) {
+      state.usersList = userList
     },
-    changeUserCount(state, userCount: number) {
-      state.userCount = userCount
+    changeUsersCount(state, userCount: number) {
+      state.usersCount = userCount
     },
     changeRoleList(state, roleList: any[]) {
       state.roleList = roleList
@@ -45,31 +39,15 @@ const systemModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       // 1.获取 pageUrl
       const { queryInfo, pageName } = payload
-      let pageUrl = ""
-      switch (pageName) {
-        case "user":
-          pageUrl = "/users/list"
-          break
-        case "role":
-          pageUrl = "/role/list"
-          break
-      }
-
+      const pageUrl = `/${pageName}/list`
       // 2.对页面发送请求
       const pageResult = await getPageListDate(pageUrl, queryInfo)
-
       // 3.将数据存储到 state中
       const { list, totalCount } = pageResult.data
-      switch (pageName) {
-        case "user":
-          commit("changeUserList", list)
-          commit("changeUserCount", totalCount)
-          break
-        case "role":
-          commit("changeRoleList", list)
-          commit("changeRoleCount", totalCount)
-          break
-      }
+      const changePageName =
+        pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+      commit(`change${changePageName}List`, list)
+      commit(`change${changePageName}Count`, totalCount)
     }
   }
 }

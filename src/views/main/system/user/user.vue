@@ -1,7 +1,10 @@
 <template>
   <div class="user">
     <page-search :search-form-config="formConfig" />
-    <page-content :content-table-config="contentTableConfig" page-name="user" />
+    <page-content
+      :content-table-config="contentTableConfig"
+      page-name="users"
+    />
     <div class="content"></div>
   </div>
 </template>
