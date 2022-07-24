@@ -19,6 +19,11 @@ const systemModule: Module<ISystemState, IRootState> = {
       return (pageName: string) => {
         return state[`${pageName}List`]
       }
+    },
+    pageListCount(state) {
+      return (pageName: string) => {
+        return state[`${pageName}Count`]
+      }
     }
   },
   mutations: {

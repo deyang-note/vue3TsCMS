@@ -38,7 +38,17 @@
       </template>
     </el-table>
     <div class="footer">
-      <slot name="footer"></slot>
+      <slot name="footer">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="listCount"
+        />
+      </slot>
     </div>
   </div>
 </template>
@@ -48,6 +58,10 @@ const props = defineProps({
   listData: {
     type: Array,
     required: true
+  },
+  listCount: {
+    type: Number,
+    default: 0
   },
   propList: {
     type: Array,
@@ -64,12 +78,21 @@ const props = defineProps({
   title: {
     type: String,
     default: "标题"
+  },
+  page: {
+    type: Object,
+    default: () => ({ currentPage: 0, pageSize: 10 })
   }
 })
-const emits = defineEmits(["selectionChange"])
-
+const emits = defineEmits(["selectionChange", "update:page"])
 const handleSelectionChange = (value: any) => {
   emits("selectionChange", value)
+}
+const handleCurrentChange = (currentPage: number) => {
+  emits("update:page", { ...props.page, currentPage })
+}
+const handleSizeChange = (pageSize: number) => {
+  emits("update:page", { ...props.page, pageSize })
 }
 </script>
 <style scoped lang="less">

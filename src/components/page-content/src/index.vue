@@ -1,20 +1,16 @@
 <template>
   <div class="page-content">
-    <dy-table :list-data="dataList" :="contentTableConfig">
+    <dy-table
+      :list-data="dataList"
+      :list-count="dataCount"
+      :="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
         <el-button type="primary">新建用户</el-button>
-        <!--          <el-button :icon="Refresh">刷新</el-button>-->
       </template>
-      <template #footer>
-        <el-pagination
-          :page-sizes="[100, 200, 300, 400]"
-          small="small"
-          background="background"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-        />
-      </template>
+      <template #footer></template>
       <!-- 列中的插槽 -->
       <template #status="scope">
         <el-button
@@ -43,8 +39,8 @@
 
 <script setup lang="ts">
 import DyTable from "@/base-ui/table"
-import { Delete, Edit, Refresh } from "@element-plus/icons-vue"
-import { computed, ref } from "vue"
+import { Delete, Edit } from "@element-plus/icons-vue"
+import { computed, ref, watch } from "vue"
 import { useStore } from "vuex"
 
 const props = defineProps({
@@ -59,13 +55,21 @@ const props = defineProps({
 })
 
 const store = useStore()
+
+// 双向绑定 pageInfo
+const pageInfo = ref({
+  currentPage: 0,
+  pageSize: 10
+})
+watch(pageInfo, () => getPageData())
+
 // 发送网络请求
 const getPageData = (queryInfo: any = {}) => {
   store.dispatch("system/getPageListAction", {
     pageName: props.pageName,
     queryInfo: {
-      offset: 0,
-      size: 10,
+      offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+      size: pageInfo.value.pageSize,
       ...queryInfo
     }
   })
@@ -76,7 +80,9 @@ defineExpose({ getPageData })
 const dataList = computed(() =>
   store.getters[`system/pageListData`](props.pageName)
 )
-// const userCount = computed(() => store.state.system.userCount)
+const dataCount = computed(() =>
+  store.getters[`system/pageListCount`](props.pageName)
+)
 </script>
 <style scoped lang="less">
 .page-content {
