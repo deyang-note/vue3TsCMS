@@ -33,6 +33,16 @@
           <el-button link type="primary" :icon="Delete">删除</el-button>
         </div>
       </template>
+      <!-- 动态插槽 -->
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
+      </template>
     </dy-table>
   </div>
 </template>
@@ -56,14 +66,14 @@ const props = defineProps({
 
 const store = useStore()
 
-// 双向绑定 pageInfo
+// 1.双向绑定 pageInfo
 const pageInfo = ref({
   currentPage: 0,
   pageSize: 10
 })
 watch(pageInfo, () => getPageData())
 
-// 发送网络请求
+// 2.发送网络请求
 const getPageData = (queryInfo: any = {}) => {
   store.dispatch("system/getPageListAction", {
     pageName: props.pageName,
@@ -76,12 +86,23 @@ const getPageData = (queryInfo: any = {}) => {
 }
 getPageData()
 defineExpose({ getPageData })
-// 从vuex中获取数据
+// 3.从vuex中获取数据
 const dataList = computed(() =>
   store.getters[`system/pageListData`](props.pageName)
 )
 const dataCount = computed(() =>
   store.getters[`system/pageListCount`](props.pageName)
+)
+
+// 4.获取其他的动态插槽名称
+const otherPropSlots = props.contentTableConfig?.propList.filter(
+  (item: any) => {
+    if (item.slotName === "status") return false
+    if (item.slotName === "createAt") return false
+    if (item.slotName === "updateAt") return false
+    if (item.slotName === "handler") return false
+    return true
+  }
 )
 </script>
 <style scoped lang="less">
