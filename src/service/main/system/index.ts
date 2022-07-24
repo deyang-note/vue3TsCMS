@@ -7,3 +7,10 @@ export function getPageListDate(url: string, queryInfo: any) {
     data: queryInfo
   })
 }
+
+// url: /users/id
+export function deletePageData(url: string) {
+  return dyRequest.delete<IDataType>({
+    url
+  })
+}

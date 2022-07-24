@@ -27,12 +27,18 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handle-btns">
           <el-button link type="primary" :icon="Edit" v-if="isUpdate">
             编辑
           </el-button>
-          <el-button link type="primary" :icon="Delete" v-if="isDelete">
+          <el-button
+            link
+            type="primary"
+            :icon="Delete"
+            v-if="isDelete"
+            @click="handleDeleteClick(scope.row)"
+          >
             删除
           </el-button>
         </div>
@@ -79,7 +85,7 @@ const isQuery = usePermission(props.pageName, "query")
 
 // 1.双向绑定 pageInfo
 const pageInfo = ref({
-  currentPage: 0,
+  currentPage: 1,
   pageSize: 10
 })
 watch(pageInfo, () => getPageData())
@@ -90,7 +96,7 @@ const getPageData = (queryInfo: any = {}) => {
   store.dispatch("system/getPageListAction", {
     pageName: props.pageName,
     queryInfo: {
-      offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+      offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
       size: pageInfo.value.pageSize,
       ...queryInfo
     }
@@ -116,6 +122,15 @@ const otherPropSlots = props.contentTableConfig?.propList.filter(
     return true
   }
 )
+
+// 5.删除/编辑/新建操作
+const handleDeleteClick = (item: any) => {
+  console.log(item)
+  store.dispatch("system/deletePageDataAction", {
+    pageName: props.pageName,
+    id: item.id
+  })
+}
 </script>
 <style scoped lang="less">
 .page-content {
