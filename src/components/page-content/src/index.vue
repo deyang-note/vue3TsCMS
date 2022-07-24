@@ -8,7 +8,7 @@
     >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
-        <el-button type="primary">新建用户</el-button>
+        <el-button type="primary" v-if="isCreate">新建用户</el-button>
       </template>
       <template #footer></template>
       <!-- 列中的插槽 -->
@@ -29,8 +29,12 @@
       </template>
       <template #handler>
         <div class="handle-btns">
-          <el-button link type="primary" :icon="Edit">编辑</el-button>
-          <el-button link type="primary" :icon="Delete">删除</el-button>
+          <el-button link type="primary" :icon="Edit" v-if="isUpdate">
+            编辑
+          </el-button>
+          <el-button link type="primary" :icon="Delete" v-if="isDelete">
+            删除
+          </el-button>
         </div>
       </template>
       <!-- 动态插槽 -->
@@ -49,6 +53,7 @@
 
 <script setup lang="ts">
 import DyTable from "@/base-ui/table"
+import { usePermission } from "@/hooks/use-permission"
 import { Delete, Edit } from "@element-plus/icons-vue"
 import { computed, ref, watch } from "vue"
 import { useStore } from "vuex"
@@ -66,6 +71,12 @@ const props = defineProps({
 
 const store = useStore()
 
+// 0.获取操作的权限
+const isCreate = usePermission(props.pageName, "create")
+const isUpdate = usePermission(props.pageName, "update")
+const isDelete = usePermission(props.pageName, "delete")
+const isQuery = usePermission(props.pageName, "query")
+
 // 1.双向绑定 pageInfo
 const pageInfo = ref({
   currentPage: 0,
@@ -75,6 +86,7 @@ watch(pageInfo, () => getPageData())
 
 // 2.发送网络请求
 const getPageData = (queryInfo: any = {}) => {
+  if (!isQuery) return
   store.dispatch("system/getPageListAction", {
     pageName: props.pageName,
     queryInfo: {
