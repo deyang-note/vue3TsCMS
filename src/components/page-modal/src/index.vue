@@ -6,16 +6,32 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import DyForm from "@/base-ui/form"
 
 const props = defineProps({
   modalConfig: {
     type: Object,
     required: true
+  },
+  defaultInfo: {
+    type: Object,
+    default: () => ({})
   }
 })
 
-const dialogVisible = ref(true)
-const formData = ref({})
+const dialogVisible = ref(false)
+const formData = ref<any>({})
+defineExpose({
+  dialogVisible
+})
+
+watch(
+  () => props.defaultInfo,
+  (newValue) => {
+    for (const item of props.modalConfig.formItems) {
+      formData.value[`${item.field}`] = newValue[`${item.field}`]
+    }
+  }
+)
 </script>

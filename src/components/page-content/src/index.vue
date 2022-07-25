@@ -8,7 +8,9 @@
     >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
-        <el-button type="primary" v-if="isCreate">新建用户</el-button>
+        <el-button type="primary" v-if="isCreate" @click="handleNewClick">
+          新建用户
+        </el-button>
       </template>
       <template #footer></template>
       <!-- 列中的插槽 -->
@@ -29,7 +31,13 @@
       </template>
       <template #handler="scope">
         <div class="handle-btns">
-          <el-button link type="primary" :icon="Edit" v-if="isUpdate">
+          <el-button
+            link
+            type="primary"
+            :icon="Edit"
+            v-if="isUpdate"
+            @click="handleEditClick(scope.row)"
+          >
             编辑
           </el-button>
           <el-button
@@ -61,6 +69,7 @@
 import DyTable from "@/base-ui/table"
 import { usePermission } from "@/hooks/use-permission"
 import { Delete, Edit } from "@element-plus/icons-vue"
+import { emit } from "process"
 import { computed, ref, watch } from "vue"
 import { useStore } from "vuex"
 
@@ -123,6 +132,8 @@ const otherPropSlots = props.contentTableConfig?.propList.filter(
   }
 )
 
+const emits = defineEmits(["newBtnClick", "editBtnClick"])
+
 // 5.删除/编辑/新建操作
 const handleDeleteClick = (item: any) => {
   console.log(item)
@@ -131,6 +142,10 @@ const handleDeleteClick = (item: any) => {
     id: item.id
   })
 }
+
+const handleNewClick = () => emits("newBtnClick")
+
+const handleEditClick = (item: any) => emits("editBtnClick", item)
 </script>
 <style scoped lang="less">
 .page-content {
