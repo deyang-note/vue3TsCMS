@@ -14,3 +14,17 @@ export function deletePageData(url: string) {
     url
   })
 }
+
+export function createPageData(url: string, newData: any) {
+  return dyRequest.post<IDataType>({
+    url,
+    data: newData
+  })
+}
+
+export function editPageData(url: string, editData: any) {
+  return dyRequest.patch<IDataType>({
+    url,
+    data: editData
+  })
+}
