@@ -2,7 +2,7 @@ import { Module } from "vuex"
 import { ISystemState } from "@/store/main/system/types"
 import { IRootState } from "@/store/type"
 
-import { deletePageData, getPageListDate } from "@/service/main/system"
+import { deletePageData, getPageListData } from "@/service/main/system"
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -62,7 +62,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       const { queryInfo, pageName } = payload
       const pageUrl = `/${pageName}/list`
       // 2.对页面发送请求
-      const pageResult = await getPageListDate(pageUrl, queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       // 3.将数据存储到 state中
       const { list, totalCount } = pageResult.data
       const changePageName =
