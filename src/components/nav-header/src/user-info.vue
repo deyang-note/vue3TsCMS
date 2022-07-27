@@ -10,7 +10,9 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item :icon="CircleClose"> 退出登陆 </el-dropdown-item>
+          <el-dropdown-item :icon="CircleClose" @click="handleExitClick">
+            退出登陆
+          </el-dropdown-item>
           <el-dropdown-item divided>用户信息</el-dropdown-item>
           <el-dropdown-item>系统管理</el-dropdown-item>
         </el-dropdown-menu>
@@ -19,13 +21,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from "@/store"
 import { CircleClose } from "@element-plus/icons-vue"
 import { computed } from "vue"
+import localCache from "@/utils/cache"
+import { useRouter } from "vue-router"
 
 const store = useStore()
 const name = computed(() => store.state.name)
+
+const router = useRouter()
+const handleExitClick = () => {
+  localCache.deleteCache("token")
+  router.push("/main")
+}
 </script>
 
 <style scoped lang="less">
