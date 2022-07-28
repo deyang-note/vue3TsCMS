@@ -69,7 +69,6 @@
 import DyTable from "@/base-ui/table"
 import { usePermission } from "@/hooks/use-permission"
 import { Delete, Edit } from "@element-plus/icons-vue"
-import { emit } from "process"
 import { computed, ref, watch } from "vue"
 import { useStore } from "vuex"
 
