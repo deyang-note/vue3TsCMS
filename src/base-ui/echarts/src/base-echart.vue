@@ -6,12 +6,12 @@
 
 <script lang="ts" setup>
 import * as echarts from "echarts"
-import { ref, onMounted, withDefaults } from "vue"
-import { EChartsOption } from "echarts"
+import { ref, onMounted, withDefaults, watchEffect } from "vue"
+import useEchart from "../hooks/useEchart"
 
 const props = withDefaults(
   defineProps<{
-    options: EChartsOption
+    options: echarts.EChartsOption
     width?: string
     height?: string
   }>(),
@@ -23,9 +23,8 @@ const props = withDefaults(
 
 const echartDivRef = ref<HTMLElement>()
 onMounted(() => {
-  const echartInstance = echarts.init(echartDivRef.value!)
-
-  echartInstance.setOption(props.options)
+  const { setOption } = useEchart(echartDivRef.value!)
+  watchEffect(() => setOption(props.options))
 })
 </script>
 
